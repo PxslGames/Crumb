@@ -13,7 +13,7 @@ import asyncio
 import os
 from collections import defaultdict, deque
 
-BOT_VERSION = "1.2.1"
+BOT_VERSION = "1.2.2"
 
 START_TIME = time.time()
 
@@ -308,6 +308,12 @@ async def ping(interaction: discord.Interaction):
 @app_commands.checks.has_permissions(moderate_members=True)
 async def warn(interaction: discord.Interaction, member: discord.Member, reason: str):
 
+    if member.id == OWNER_ID:
+        return await interaction.response.send_message(
+            "You can't moderate the bot owner.",
+            ephemeral=True
+        )
+
     if member.bot:
         return await interaction.response.send_message("you cant warn bots.", ephemeral=True)
 
@@ -394,6 +400,12 @@ async def clear_warns(interaction: discord.Interaction, member: discord.Member):
 @app_commands.checks.has_permissions(ban_members=True)
 async def ban(interaction: discord.Interaction, member: discord.Member, reason: str = "No reason"):
 
+    if member.id == OWNER_ID:
+        return await interaction.response.send_message(
+            "You can't moderate the bot owner.",
+            ephemeral=True
+        )
+
     if member.top_role >= interaction.user.top_role:
         return await interaction.response.send_message("role too high", ephemeral=True)
 
@@ -408,6 +420,11 @@ async def ban(interaction: discord.Interaction, member: discord.Member, reason: 
 @bot.tree.command(name="kick", description="Kick member")
 @app_commands.checks.has_permissions(kick_members=True)
 async def kick(interaction: discord.Interaction, member: discord.Member, reason: str = "No reason"):
+    if member.id == OWNER_ID:
+        return await interaction.response.send_message(
+            "You can't moderate the bot owner.",
+            ephemeral=True
+        )
 
     if member.top_role >= interaction.user.top_role:
         return await interaction.response.send_message("role too high", ephemeral=True)
@@ -419,12 +436,24 @@ async def kick(interaction: discord.Interaction, member: discord.Member, reason:
 @app_commands.checks.has_permissions(moderate_members=True)
 async def mute(interaction: discord.Interaction, member: discord.Member, minutes: int):
 
+    if member.id == OWNER_ID:
+        return await interaction.response.send_message(
+            "You can't moderate the bot owner.",
+            ephemeral=True
+        )
+
     await member.timeout(datetime.timedelta(minutes=minutes))
     await interaction.response.send_message("muted", ephemeral=True)
 
 @bot.tree.command(name="unmute", description="Unmute member")
 @app_commands.checks.has_permissions(moderate_members=True)
 async def unmute(interaction: discord.Interaction, member: discord.Member):
+
+    if member.id == OWNER_ID:
+        return await interaction.response.send_message(
+            "You can't moderate the bot owner.",
+            ephemeral=True
+        )
 
     await member.timeout(None)
     await interaction.response.send_message("unmuted", ephemeral=True)
@@ -888,6 +917,10 @@ INVITE_REGEX = re.compile(r"(discord\.gg|discord\.com/invite|discordapp\.com/inv
 async def on_message(message: discord.Message):
     try:
         if message.author.bot or not message.guild:
+            return
+        
+        if message.author.id == OWNER_ID:
+            await bot.process_commands(message)
             return
 
         now = time.time()
