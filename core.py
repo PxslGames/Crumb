@@ -9,7 +9,7 @@ import datetime
 import asyncio
 import os
 
-BOT_VERSION = "1.2.3"
+BOT_VERSION = "1.2.4"
 
 START_TIME = time.time()
 
@@ -106,15 +106,42 @@ def parse_time(t: str):
 # Banned word filtering
 # --------------------------------------------------------------------------
 
-ENCODED_BANNED = (
-    "WyJuaWdnZXIiLCAibmlnZ2EiLCAiZmFnIiwgImZhZ2dvdCIsICJjaGluayIsICJ0cmFubnkiLCAi"
-    "bmlnYSIsICJpZ2dhIiwgIm5paWciLCAiYmxhY2t5IiwgImJsYWNraWVzIiwgInBvcm5odWIuY29t"
-    "IiwgInh2aWRlb3MiLCAiZTYyMS5uZXQiLCAib25seWZhbnMuY29tIiwgImNoaWxkcG9ybiIsICJy"
-    "YXBlIiwgInJhcGVkIiwgInJhcGluZyIsICJyYXBlciIsICJyYXBlcyIsICJwYWtpIiwgImt5cyIs"
-    "ICJraWxsIHlvdXJzZWxmIiwgImNvbW1pdCBzdWljaWRlIiwgInN1aWNpZGFsIiwgInBlZG9waGls"
-    "ZSIsICJ4eHgiLCAiaW5jZXN0IiwgImJlc3RpYWxpdHkiLCAiYmRzbSIsICJjcCIsICJzaG90YSIs"
-    "ICJsb2xpIiwgImdvcmUiLCAi4piNIiwgIuKYkiJd"
-)
+ENCODED_BANNED = [
+  "nigger",
+  "nigga",
+  "fag",
+  "faggot",
+  "chink",
+  "tranny",
+  "niga",
+  "igga",
+  "niig",
+  "blacky",
+  "blackies",
+  "pornhub.com",
+  "xvideos",
+  "e621.net",
+  "onlyfans.com",
+  "childporn",
+  "rape",
+  "raped",
+  "raping",
+  "raper",
+  "rapes",
+  "paki",
+  "kys",
+  "kill yourself",
+  "commit suicide",
+  "suicidal",
+  "pedophile",
+  "incest",
+  "bestiality",
+  "bdsm",
+  "cp",
+  "shota",
+  "loli",
+  "gore",
+]
 
 decoded_json = base64.b64decode(ENCODED_BANNED).decode("utf-8")
 banned_words = json.loads(decoded_json)

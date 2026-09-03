@@ -33,41 +33,6 @@ class Misc(commands.Cog):
         await self.bot.change_presence(activity=discord.CustomActivity(name=text))
         await interaction.response.send_message("yo updated status cuh", ephemeral=True)
 
-    @app_commands.command(name="announce", description="Send a message to all servers system channels (owner only)")
-    async def announce(self, interaction: discord.Interaction, message: str):
-
-        if interaction.user.id != OWNER_ID:
-            return await interaction.response.send_message(
-                "you are not allowed to use this command.",
-                ephemeral=True
-            )
-
-        await interaction.response.send_message(
-            "sending announcement...",
-            ephemeral=True
-        )
-
-        sent = 0
-        failed = 0
-
-        for guild in self.bot.guilds:
-            channel = get_system_channel(guild)
-
-            if not channel:
-                failed += 1
-                continue
-
-            try:
-                await channel.send(message)
-                sent += 1
-            except:
-                failed += 1
-
-        await interaction.followup.send(
-            f"done.\nsent: {sent}\nfailed: {failed}",
-            ephemeral=True
-        )
-
     @app_commands.command(name="stats", description="view server stats")
     async def stats(self, interaction: discord.Interaction):
         guild = interaction.guild
