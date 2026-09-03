@@ -1,8 +1,6 @@
 import discord
 import re
-import base64
 import json
-import random
 import logging
 import time
 import datetime
@@ -106,7 +104,7 @@ def parse_time(t: str):
 # Banned word filtering
 # --------------------------------------------------------------------------
 
-ENCODED_BANNED = [
+BANNED_WORDS = [
   "nigger",
   "nigga",
   "fag",
@@ -143,8 +141,7 @@ ENCODED_BANNED = [
   "gore",
 ]
 
-decoded_json = base64.b64decode(ENCODED_BANNED).decode("utf-8")
-banned_words = json.loads(decoded_json)
+banned_words = BANNED_WORDS
 
 LEET_MAP = {
     "0": "o", "1": "i", "3": "e", "4": "a",
